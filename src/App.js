@@ -1,25 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import wineData from "./wineData";
+import RenderTable from "./components/RenderTable";
+import { calculateClassWiseStats, calculateGamma } from "./utils/Utils";
 
-function App() {
+const App = () => {
+  // Calculate class-wise statistics for Flavanoids
+  const flavanoidsStats = calculateClassWiseStats(wineData, "Flavanoids");
+
+  // Calculate class-wise statistics for Gamma
+  const gammaStats = calculateGamma(wineData);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {/* Render table for Flavanoids statistics */}
+      <RenderTable stats={flavanoidsStats} property="Flavanoids" />
+
+      {/* Render table for Gamma statistics */}
+      <RenderTable stats={gammaStats} property="Gamma" />
     </div>
   );
-}
+};
 
 export default App;
