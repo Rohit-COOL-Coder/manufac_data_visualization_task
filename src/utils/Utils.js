@@ -36,11 +36,7 @@ export const calculateMode = (values) => {
 };
 
 // Function to calculate class-wise statistics (Mean, Median, Mode)
-export const calculateClassWiseStats = (
-  data,
-  property,
-  additionalValues = null
-) => {
+export const calculateClassWiseStats = (data, property) => {
   // Extracting unique class labels from the dataset
   const classes = Array.from(new Set(data.map((entry) => entry.Alcohol)));
   const stats = {};
@@ -49,9 +45,7 @@ export const calculateClassWiseStats = (
     const classData = data.filter((entry) => entry.Alcohol === cls);
 
     // Using additionalValues if provided, otherwise extracting property values
-    const values = additionalValues
-      ? additionalValues
-      : classData.map((entry) => entry[property]);
+    const values = classData.map((entry) => entry[property]);
 
     // Calculating Mean, Median, and Mode for the current class
     stats[cls] = {
@@ -65,9 +59,11 @@ export const calculateClassWiseStats = (
 
 // Function to calculate class-wise statistics for the "Gamma" property
 export const calculateGamma = (data) => {
-  const gammaValues = data.map(
-    (entry) => (entry.Ash * entry.Hue) / entry.Magnesium
-  );
+  const updatedData = data.map((entry) => ({
+    ...entry,
+    Gamma: (entry.Ash * entry.Hue) / entry.Magnesium,
+  }));
+
   // Using calculateClassWiseStats to calculate statistics for "Gamma"
-  return calculateClassWiseStats(data, "Gamma", gammaValues);
+  return calculateClassWiseStats(updatedData, "Gamma");
 };
